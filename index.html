@@ -1,0 +1,718 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management System</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        body {
+            background: #f3f6fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 30px 0;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 15px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .student-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            height: 100%;
+            transition: 0.2s;
+        }
+
+        .student-card:hover {
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .student-id {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .stat-card {
+            border-radius: 12px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .status-active {
+            color: #15803d;
+            background: #dcfce7;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            color: #b91c1c;
+            background: #fee2e2;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 10px;
+            color: #64748b;
+        }
+
+        footer {
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="fw-bold">Student Management System</h1>
+            <p class="mb-0">
+                Add, manage, search and subscribe students.
+            </p>
+        </div>
+    </header>
+
+    <main class="container py-4">
+
+        <!-- Statistics -->
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <p class="text-secondary mb-1">Total Students</p>
+                    <div class="stat-number text-primary" id="totalStudents">
+                        0
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <p class="text-secondary mb-1">Subscribed</p>
+                    <div class="stat-number text-success" id="subscribedStudents">
+                        0
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <p class="text-secondary mb-1">Not Subscribed</p>
+                    <div class="stat-number text-danger" id="unsubscribedStudents">
+                        0
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Add Student Form -->
+        <section class="main-card mb-4">
+
+            <h3 class="mb-4" id="formTitle">Add New Student</h3>
+
+            <form id="studentForm">
+
+                <input type="hidden" id="editId">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label for="studentName" class="form-label">
+                            Student Name
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="studentName"
+                            placeholder="Enter student name"
+                            required
+                            maxlength="100"
+                        >
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="studentCourse" class="form-label">
+                            Course
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="studentCourse"
+                            placeholder="Enter course name"
+                            required
+                            maxlength="100"
+                        >
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="studentPhone" class="form-label">
+                            Phone Number (Optional)
+                        </label>
+
+                        <input
+                            type="tel"
+                            class="form-control"
+                            id="studentPhone"
+                            placeholder="Enter phone number"
+                            maxlength="30"
+                        >
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="studentEmail" class="form-label">
+                            Email (Optional)
+                        </label>
+
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="studentEmail"
+                            placeholder="Enter email address"
+                            maxlength="150"
+                        >
+                    </div>
+
+                    <div class="col-12">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="saveButton"
+                        >
+                            Add Student
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary d-none"
+                            id="cancelEditButton"
+                        >
+                            Cancel Edit
+                        </button>
+
+                    </div>
+
+                </div>
+            </form>
+
+            <div id="message" class="mt-3" aria-live="polite"></div>
+
+        </section>
+
+        <!-- Search and Filters -->
+        <section class="main-card mb-4">
+
+            <h3 class="mb-3">Manage Students</h3>
+
+            <div class="row g-3">
+
+                <div class="col-md-7">
+                    <label for="searchInput" class="form-label">
+                        Search
+                    </label>
+
+                    <input
+                        type="search"
+                        id="searchInput"
+                        class="form-control"
+                        placeholder="Search by ID, name, course or phone"
+                    >
+                </div>
+
+                <div class="col-md-5">
+                    <label for="statusFilter" class="form-label">
+                        Filter by Subscription
+                    </label>
+
+                    <select id="statusFilter" class="form-select">
+                        <option value="all">All Students</option>
+                        <option value="subscribed">Subscribed</option>
+                        <option value="unsubscribed">Not Subscribed</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Students List -->
+        <section>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0">Students List</h3>
+
+                <span class="badge bg-primary" id="resultCount">
+                    0 Students
+                </span>
+            </div>
+
+            <div class="row g-3" id="studentList"></div>
+        </section>
+
+        <footer class="text-center mt-5 mb-3">
+            Student Management System &copy; <span id="currentYear"></span>
+        </footer>
+
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // 1. Get HTML elements
+        const studentForm = document.getElementById("studentForm");
+        const studentName = document.getElementById("studentName");
+        const studentCourse = document.getElementById("studentCourse");
+        const studentPhone = document.getElementById("studentPhone");
+        const studentEmail = document.getElementById("studentEmail");
+
+        const editId = document.getElementById("editId");
+        const formTitle = document.getElementById("formTitle");
+        const saveButton = document.getElementById("saveButton");
+        const cancelEditButton = document.getElementById("cancelEditButton");
+
+        const studentList = document.getElementById("studentList");
+        const searchInput = document.getElementById("searchInput");
+        const statusFilter = document.getElementById("statusFilter");
+        const message = document.getElementById("message");
+
+        const totalStudents = document.getElementById("totalStudents");
+        const subscribedStudents = document.getElementById("subscribedStudents");
+        const unsubscribedStudents = document.getElementById("unsubscribedStudents");
+        const resultCount = document.getElementById("resultCount");
+
+        document.getElementById("currentYear").textContent =
+            new Date().getFullYear();
+
+
+        // 2. Load saved data
+        function loadStudents() {
+            try {
+                const savedData = localStorage.getItem("studentManagementData");
+
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+
+                    if (Array.isArray(data)) {
+                        return data.filter(function(student) {
+                            return student &&
+                                Number.isSafeInteger(student.id) &&
+                                student.id > 0 &&
+                                typeof student.name === "string" &&
+                                typeof student.course === "string";
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Could not load student data:", error);
+            }
+
+            return [];
+        }
+
+        let students = loadStudents();
+
+        // Keep IDs unique, including after deleting students.
+        let nextId = Math.max(
+            0,
+            ...students.map(function(student) {
+                return student.id;
+            })
+        ) + 1;
+
+
+        // 3. Save data
+        function saveStudents() {
+            try {
+                localStorage.setItem(
+                    "studentManagementData",
+                    JSON.stringify(students)
+                );
+
+                return true;
+            } catch (error) {
+                showMessage(
+                    "Could not save data in this browser.",
+                    "danger"
+                );
+
+                return false;
+            }
+        }
+
+
+        // 4. Show messages
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = "alert alert-" + type + " mt-3";
+        }
+
+        function clearMessage() {
+            message.textContent = "";
+            message.className = "";
+        }
+
+
+        // 5. Add or update a student
+        studentForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            clearMessage();
+
+            const name = studentName.value.trim();
+            const course = studentCourse.value.trim();
+            const phone = studentPhone.value.trim();
+            const email = studentEmail.value.trim();
+
+            if (!name || !course) {
+                showMessage(
+                    "Please enter the student name and course.",
+                    "warning"
+                );
+                return;
+            }
+
+            // EDIT EXISTING STUDENT
+            if (editId.value !== "") {
+                const id = Number(editId.value);
+
+                const student = students.find(function(item) {
+                    return item.id === id;
+                });
+
+                if (!student) {
+                    showMessage("Student not found.", "danger");
+                    resetForm();
+                    return;
+                }
+
+                const oldStudent = { ...student };
+
+                student.name = name;
+                student.course = course;
+                student.phone = phone;
+                student.email = email;
+
+                if (!saveStudents()) {
+                    Object.assign(student, oldStudent);
+                    return;
+                }
+
+                resetForm();
+                renderStudents();
+
+                showMessage("Student information updated successfully.", "success");
+                return;
+            }
+
+            // ADD NEW STUDENT
+            const newStudent = {
+                id: nextId,
+                name: name,
+                course: course,
+                phone: phone,
+                email: email,
+                subscribed: false,
+                createdAt: new Date().toISOString()
+            };
+
+            students.push(newStudent);
+
+            if (!saveStudents()) {
+                students.pop();
+                return;
+            }
+
+            nextId++;
+
+            studentForm.reset();
+            renderStudents();
+
+            showMessage(
+                "Student added successfully! Student ID: " + newStudent.id,
+                "success"
+            );
+        });
+
+
+        // 6. Render students
+        function renderStudents() {
+            studentList.replaceChildren();
+
+            const searchText = searchInput.value.trim().toLowerCase();
+            const filter = statusFilter.value;
+
+            const filteredStudents = students.filter(function(student) {
+                const searchableText = [
+                    student.id,
+                    student.name,
+                    student.course,
+                    student.phone || "",
+                    student.email || ""
+                ].join(" ").toLowerCase();
+
+                const matchesSearch = searchableText.includes(searchText);
+
+                const matchesStatus =
+                    filter === "all" ||
+                    (filter === "subscribed" && student.subscribed === true) ||
+                    (filter === "unsubscribed" && student.subscribed !== true);
+
+                return matchesSearch && matchesStatus;
+            });
+
+            totalStudents.textContent = students.length;
+
+            subscribedStudents.textContent = students.filter(function(student) {
+                return student.subscribed === true;
+            }).length;
+
+            unsubscribedStudents.textContent =
+                students.filter(function(student) {
+                    return student.subscribed !== true;
+                }).length;
+
+            resultCount.textContent =
+                filteredStudents.length +
+                (filteredStudents.length === 1 ? " Student" : " Students");
+
+            if (filteredStudents.length === 0) {
+                const emptyColumn = document.createElement("div");
+                emptyColumn.className = "col-12";
+
+                const emptyBox = document.createElement("div");
+                emptyBox.className = "main-card empty-state";
+
+                const title = document.createElement("h5");
+                title.textContent = students.length === 0
+                    ? "No Students Yet"
+                    : "No Matching Students";
+
+                const description = document.createElement("p");
+                description.textContent = students.length === 0
+                    ? "Use the form above to add your first student."
+                    : "Try another search or change the filter.";
+
+                emptyBox.append(title, description);
+                emptyColumn.appendChild(emptyBox);
+                studentList.appendChild(emptyColumn);
+
+                return;
+            }
+
+            filteredStudents.forEach(function(student) {
+                const column = document.createElement("div");
+                column.className = "col-md-6 col-lg-4";
+
+                const card = document.createElement("div");
+                card.className = "student-card";
+
+                const heading = document.createElement("h5");
+                heading.className = "fw-bold";
+                heading.textContent = student.name;
+
+                const idText = document.createElement("p");
+                idText.className = "student-id mb-3";
+                idText.textContent = "Student ID: " + student.id;
+
+                const courseText = document.createElement("p");
+                courseText.className = "mb-2";
+                courseText.textContent = "Course: " + student.course;
+
+                const phoneText = document.createElement("p");
+                phoneText.className = "mb-2";
+                phoneText.textContent = "Phone: " + (student.phone || "Not provided");
+
+                const emailText = document.createElement("p");
+                emailText.className = "mb-3 text-break";
+                emailText.textContent = "Email: " + (student.email || "Not provided");
+
+                const status = document.createElement("span");
+
+                if (student.subscribed === true) {
+                    status.className = "status-active";
+                    status.textContent = "Subscribed";
+                } else {
+                    status.className = "status-inactive";
+                    status.textContent = "Not Subscribed";
+                }
+
+                const statusContainer = document.createElement("div");
+                statusContainer.className = "mb-3";
+                statusContainer.appendChild(status);
+
+                // SUBSCRIBE / UNSUBSCRIBE
+                const subscribeButton = document.createElement("button");
+
+                subscribeButton.type = "button";
+                subscribeButton.className = student.subscribed
+                    ? "btn btn-warning btn-sm"
+                    : "btn btn-success btn-sm";
+
+                subscribeButton.textContent = student.subscribed
+                    ? "Unsubscribe"
+                    : "Subscribe";
+
+                subscribeButton.addEventListener("click", function() {
+                    const oldValue = student.subscribed;
+
+                    student.subscribed = !student.subscribed;
+
+                    if (!saveStudents()) {
+                        student.subscribed = oldValue;
+                        return;
+                    }
+
+                    renderStudents();
+                });
+
+                // EDIT
+                const editButton = document.createElement("button");
+                editButton.type = "button";
+                editButton.className = "btn btn-primary btn-sm";
+                editButton.textContent = "Edit";
+
+                editButton.addEventListener("click", function() {
+                    studentName.value = student.name;
+                    studentCourse.value = student.course;
+                    studentPhone.value = student.phone || "";
+                    studentEmail.value = student.email || "";
+                    editId.value = student.id;
+
+                    formTitle.textContent = "Edit Student #" + student.id;
+                    saveButton.textContent = "Save Changes";
+                    cancelEditButton.classList.remove("d-none");
+
+                    clearMessage();
+
+                    studentForm.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                    studentName.focus();
+                });
+
+                // DELETE
+                const deleteButton = document.createElement("button");
+                deleteButton.type = "button";
+                deleteButton.className = "btn btn-outline-danger btn-sm";
+                deleteButton.textContent = "Delete";
+
+                deleteButton.addEventListener("click", function() {
+                    const confirmed = confirm(
+                        "Are you sure you want to delete " + student.name + "?"
+                    );
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+                    const oldStudents = students;
+
+                    students = students.filter(function(item) {
+                        return item.id !== student.id;
+                    });
+
+                    if (!saveStudents()) {
+                        students = oldStudents;
+                        return;
+                    }
+
+                    if (Number(editId.value) === student.id) {
+                        resetForm();
+                    }
+
+                    renderStudents();
+
+                    showMessage("Student deleted successfully.", "success");
+                });
+
+                const buttons = document.createElement("div");
+                buttons.className = "d-flex flex-wrap gap-2";
+
+                buttons.append(
+                    subscribeButton,
+                    editButton,
+                    deleteButton
+                );
+
+                card.append(
+                    heading,
+                    idText,
+                    courseText,
+                    phoneText,
+                    emailText,
+                    statusContainer,
+                    buttons
+                );
+
+                column.appendChild(card);
+                studentList.appendChild(column);
+            });
+        }
+
+
+        // 7. Reset form
+        function resetForm() {
+            studentForm.reset();
+            editId.value = "";
+
+            formTitle.textContent = "Add New Student";
+            saveButton.textContent = "Add Student";
+
+            cancelEditButton.classList.add("d-none");
+            clearMessage();
+        }
+
+        cancelEditButton.addEventListener("click", function() {
+            resetForm();
+        });
+
+
+        // 8. Search and filter
+        searchInput.addEventListener("input", renderStudents);
+        statusFilter.addEventListener("change", renderStudents);
+
+
+        // 9. Initial display
+        renderStudents();
+    </script>
+
+</body>
+</html>
+```

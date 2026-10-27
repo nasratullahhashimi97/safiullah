@@ -1,0 +1,246 @@
+```css
+/* General Settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f3f6fb;
+    font-family: Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+    padding: 35px 0;
+}
+
+.header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.header p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* Main Cards */
+.main-card {
+    background: white;
+    border-radius: 15px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    margin-bottom: 24px;
+}
+
+.main-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Statistics */
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.stat-number {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* Form */
+.form-label {
+    font-weight: 600;
+    color: #334155;
+}
+
+.form-control,
+.form-select {
+    min-height: 44px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.btn-primary {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background: #16a34a;
+    border-color: #16a34a;
+}
+
+.btn-success:hover {
+    background: #15803d;
+    border-color: #15803d;
+}
+
+.btn-warning:hover,
+.btn-danger:hover {
+    transform: translateY(-1px);
+}
+
+/* Student Cards */
+.student-card {
+    height: 100%;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.25s, box-shadow 0.25s;
+    overflow-wrap: anywhere;
+}
+
+.student-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+.student-card h5 {
+    font-size: 20px;
+    color: #1e293b;
+}
+
+.student-id {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.student-card p {
+    color: #475569;
+    font-size: 14px;
+}
+
+/* Subscription Status */
+.status-active {
+    display: inline-block;
+    color: #15803d;
+    background: #dcfce7;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-inactive {
+    display: inline-block;
+    color: #b91c1c;
+    background: #fee2e2;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Search */
+input[type="search"] {
+    background: #fff;
+}
+
+input[type="search"]::placeholder,
+input::placeholder {
+    color: #94a3b8;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 45px 15px;
+    color: #64748b;
+}
+
+.empty-state h5 {
+    color: #334155;
+    font-weight: bold;
+}
+
+/* Alerts */
+#message {
+    border-radius: 8px;
+}
+
+/* Footer */
+footer {
+    color: #64748b;
+    font-size: 14px;
+    padding: 15px 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .header {
+        padding: 25px 0;
+    }
+
+    .header h1 {
+        font-size: 25px;
+    }
+
+    .main-card {
+        padding: 18px;
+    }
+
+    .main-card h3 {
+        font-size: 20px;
+    }
+
+    .stat-number {
+        font-size: 25px;
+    }
+
+    .student-card {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 22px;
+    }
+
+    .main-card {
+        padding: 15px;
+    }
+
+    .btn {
+        font-size: 13px;
+    }
+}
+```
